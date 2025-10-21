@@ -21,17 +21,14 @@ export class App implements OnInit{
   playlist: undefined | PlaylistResponse
 
   ngOnInit(): void {
-    this._s_LoginService.getAccessToken().subscribe((data)=>{
-      this.token = data.access_token;
-      this._s_PlaylistService.getPlaylist(this.token).subscribe((data)=>{
-        this.playlist = data
-        console.log(this.playlist);
-      })
-    });
-
-
+    this._s_LoginService.getAccessToken().subscribe();
   }
 
+  doPetition(){
+    this._s_PlaylistService.getPlaylist().subscribe(
+      data => console.log(data)
+    );
+  }
 
 
 }

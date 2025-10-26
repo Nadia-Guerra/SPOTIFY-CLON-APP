@@ -1,3 +1,4 @@
+
 :host {
   width: 100%;
   height: 100vh;
@@ -5,6 +6,7 @@
   flex-direction: column;
   position: relative;
   overflow: hidden;
+  font-family: (--font-family);
 }
 
 .background-blur {
@@ -29,18 +31,18 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(52, 73, 94, 0.7) 100%);
+  background: rgba(26, 32, 24, 0.7);
   z-index: 1;
 }
 
 #main-container {
   width: 100%;
-  height: calc(100vh - 60px);
-  margin-top: 60px;
-  padding: 20px;
+  height: calc(100vh - 80px);
+  margin-top: 80px;
+  padding: 24px;
   display: grid;
-  grid-template-columns: 60% 40%;
-  gap: 20px;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
   position: relative;
   z-index: 1;
 }
@@ -48,14 +50,14 @@
 #left-section {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   overflow: hidden;
 }
 
 #right-section {
   background-color: rgba(71, 86, 55, 0.6);
   border-radius: 20px;
-  padding: 30px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

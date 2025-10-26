@@ -2,59 +2,53 @@
   width: 100%;
   display: flex;
   gap: 20px;
-  padding: 20px 0;
   overflow-x: auto;
   overflow-y: hidden;
+  padding-bottom: 10px; /* Provides a bit of space below */
 }
 
+/* Hide scrollbar for a cleaner look */
 .album-grid-container::-webkit-scrollbar {
-  height: 8px;
+  display: none;
 }
-
-.album-grid-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-}
-
-.album-grid-container::-webkit-scrollbar-thumb {
-  background: #A0AF92;
-  border-radius: 10px;
+.album-grid-container {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .album-card {
-  min-width: 150px;
-  display: flex;
-  flex-direction: column;
+  width: 150px;
+  flex-shrink: 0;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease-in-out;
 }
 
 .album-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
 }
 
 .album-cover {
   width: 150px;
   height: 150px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   margin-bottom: 10px;
+  object-fit: cover;
 }
 
 .album-title {
-  font-size: 1em;
-  font-weight: 400;
-  color: #A0AF92;
-  margin: 5px 0 2px 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #f0f0f0;
+  margin: 0 0 4px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .album-year {
-  font-size: 0.9em;
-  font-weight: 200;
-  color: #A0AF92;
-  opacity: 0.7;
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.7);
   margin: 0;
 }

@@ -1,5 +1,13 @@
-<div id="main">
-    <app-song-info [song]="song" displayMode="main"></app-song-info>
+<app-navbar></app-navbar>
+
+<div id="main-container">
+  <div id="left-section">
+    <app-album-grid></app-album-grid>
     <app-playlist [playlist]="playlist"></app-playlist>
+  </div>
+  
+  <div id="right-section">
+    <app-song-info [song]="song" displayMode="main"></app-song-info>
+    <app-audio-controller></app-audio-controller>
+  </div>
 </div>
-<app-audio-controller></app-audio-controller>

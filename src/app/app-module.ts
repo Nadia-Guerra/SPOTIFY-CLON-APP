@@ -10,6 +10,8 @@ import { Player } from './player/player';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth-interceptor';
 import { addAuthHeaderInterceptor } from './interceptors/add-auth-header-interceptor';
+import { Navbar } from './navbar/navbar';
+import { AlbumGrid } from './album-grid/album-grid';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { addAuthHeaderInterceptor } from './interceptors/add-auth-header-interce
     SongInfo,
     AudioController,
     Playlist,
-    Player
+    Player,
+    Navbar,
+    AlbumGrid
   ],
   imports: [
     BrowserModule,

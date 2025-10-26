@@ -3,45 +3,33 @@
   width: 100%;
   background-color: rgba(71, 86, 55, 0.6);
   border-radius: 20px;
-  padding: 20px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  overflow: hidden; 
 }
 
-h1 {
-  width: 100%;
-  text-align: left;
-  font-size: 1.8em;
-  font-weight: 400;
-  color: #A0AF92;
-  margin: 0 0 20px 0;
-  padding-bottom: 15px;
-  border-bottom: 2px solid rgba(160, 175, 146, 0.3);
-}
-
-.content {
-  height: calc(100% - 60px);
+.playlist-content {
+  height: 100%;
   overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 10px;
+  padding-right: 8px; 
 }
 
-.content::-webkit-scrollbar {
-  width: 8px;
+.playlist-content::-webkit-scrollbar {
+  width: 6px;
 }
 
-.content::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+.playlist-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.playlist-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
 }
 
-.content::-webkit-scrollbar-thumb {
-  background: #A0AF92;
-  border-radius: 10px;
-}
-
-.content::-webkit-scrollbar-thumb:hover {
-  background: #8a9a7c;
+.playlist-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }

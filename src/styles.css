@@ -1,5 +1,62 @@
-/* You can add global styles to this file, and also import other style files */
-*{
-    padding: 0;
-    margin: 0;
+:root {
+  --font-family: 'Montserrat Alternates', sans-serif;
+  --primary-text: #e2e8f0;
+  --secondary-text: #a0af92;
+  --icon-color: #A0AF92;
+  --hover-color: #ffffff;
+  --bg-accent-translucent: rgba(255, 255, 255, 0.1);
+  --main-bg-color: #5d6b5b; 
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  font-family: var(--font-family);
+  color: var(--primary-text);
+  overflow: hidden; 
+  background-image: url('https://picsum.photos/seed/musicapp/1920/1080');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(40, 50, 40, 0.6); 
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: -1; 
+}
+
+app-root {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }

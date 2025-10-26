@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Song } from '../interfaces/song';
 
 @Component({
@@ -9,11 +9,11 @@ import { Song } from '../interfaces/song';
 })
 export class Player {
 
-  song = {
+  song = signal<Song>({
     cover: "https://picsum.photos/200",
     name: "CANCION 1",
     artist: "ARTISTA 1"
-  }
+  });
 
   playlist: Song[] = [
     {
@@ -61,6 +61,4 @@ export class Player {
   constructor(){
     console.log("COMPONENTE APP CREADO");
   }
-
-
 }

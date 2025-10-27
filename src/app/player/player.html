@@ -9,6 +9,7 @@
   
   <div id="right-section">
     <app-song-info [song]="song()" displayMode="main"></app-song-info>
-    <app-audio-controller></app-audio-controller>
+    <app-audio-controller [currentSong]="song()" [playlist]="playlist"></app-audio-controller> 
+    <!-- se pasan los datos de las canciones -->
   </div>
 </div>

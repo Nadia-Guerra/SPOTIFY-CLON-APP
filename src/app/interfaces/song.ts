@@ -1,7 +1,6 @@
 export interface Song {
-
-    cover: string,
-    artist: string,
-    name: string
-
+  cover: string;
+  name: string;
+  artist: string;
+  url: string;  
 }

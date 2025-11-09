@@ -48,9 +48,7 @@ export class SearchService {
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Buscar canciones en Spotify
-   */
+ 
   searchTracks(query: string, limit: number = 20): Observable<SpotifySearchResponse> {
     const params = new HttpParams()
       .set('q', query)
@@ -60,9 +58,6 @@ export class SearchService {
     return this.http.get<SpotifySearchResponse>(`${environment.API_URL}/search`, { params });
   }
 
-  /**
-   * Buscar álbumes
-   */
   searchAlbums(query: string, limit: number = 10): Observable<SpotifySearchResponse> {
     const params = new HttpParams()
       .set('q', query)
@@ -72,9 +67,6 @@ export class SearchService {
     return this.http.get<SpotifySearchResponse>(`${environment.API_URL}/search`, { params });
   }
 
-  /**
-   * Buscar todo (canciones, álbumes, artistas)
-   */
   searchAll(query: string): Observable<SpotifySearchResponse> {
     const params = new HttpParams()
       .set('q', query)
@@ -84,16 +76,12 @@ export class SearchService {
     return this.http.get<SpotifySearchResponse>(`${environment.API_URL}/search`, { params });
   }
 
-  /**
-   * Obtener detalles de una canción
-   */
+  
   getTrack(trackId: string): Observable<SpotifyTrack> {
     return this.http.get<SpotifyTrack>(`${environment.API_URL}/tracks/${trackId}`);
   }
 
-  /**
-   * Obtener canciones recomendadas
-   */
+  
   getRecommendations(seedTracks?: string[], limit: number = 20): Observable<any> {
     let params = new HttpParams().set('limit', limit.toString());
     

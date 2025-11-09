@@ -4,6 +4,7 @@ import { PlaylistService } from './services/spotify-api/playlist-service';
 
 @Component({
   selector: 'app-root',
+  standalone: false,
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })

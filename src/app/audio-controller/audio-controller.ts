@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, effect, ChangeDetectorRef } from '@angular/core';
 import { SpotifyTrack } from '../services/spotify-api/search-service';
 
 @Component({
@@ -7,13 +7,51 @@ import { SpotifyTrack } from '../services/spotify-api/search-service';
   styleUrls: ['./audio-controller.css'],
   standalone: false
 })
-export class AudioController implements OnChanges {
+export class AudioController {
   @Input() currentSong!: SpotifyTrack | null;
   @Input() playlist: SpotifyTrack[] = [];
 
   private audio: HTMLAudioElement = new Audio();
   isPlaying: boolean = false;
-  currentTrackIndex = -1;
+  private lastSongId: string | null = null;
+
+  constructor(private cdr: ChangeDetectorRef) {
+    this.audio.addEventListener('timeupdate', () => {
+      this.cdr.detectChanges();
+    });
+
+    this.audio.addEventListener('ended', () => {
+      this.isPlaying = false;
+      this.playNext();
+    });
+
+    this.audio.addEventListener('canplay', () => {
+      console.log('Audio listo para reproducir');
+    });
+
+    // Si hay error
+    this.audio.addEventListener('error', (e) => {
+      console.error('Error en el audio:', e);
+      this.isPlaying = false;
+    });
+  }
+
+  ngOnChanges(): void {
+    console.log('ngOnChanges - currentSong:', this.currentSong);
+    
+    if (this.currentSong && this.currentSong.id !== this.lastSongId) {
+      this.lastSongId = this.currentSong.id;
+      console.log('Nueva canción:', this.currentSong.name);
+      console.log('Preview URL:', this.currentSong.preview_url);
+      
+      if (this.currentSong.preview_url) {
+        this.loadAndPlay();
+      } else {
+        console.warn('Sin preview:', this.currentSong.name);
+        alert(`"${this.currentSong.name}" no tiene preview disponible`);
+      }
+    }
+  }
 
   formatTime(ms?: number): string {
     if (!ms || isNaN(ms)) return '0:00';
@@ -42,59 +80,109 @@ export class AudioController implements OnChanges {
     return this.currentSong?.duration_ms || 0;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['currentSong'] && this.currentSong && this.currentSong.preview_url) {
-      this.setCurrentTrack();
-      this.play();
+  loadAndPlay(): void {
+    if (!this.currentSong?.preview_url) {
+      console.warn('No hay preview_url para cargar');
+      return;
     }
-  }
 
-  setCurrentTrack() {
-    if (!this.currentSong?.preview_url) return;
+    console.log(' Pausando audio anterior');
+    this.audio.pause();
+    this.audio.currentTime = 0;
+    
+    console.log('Cargando URL:', this.currentSong.preview_url);
     this.audio.src = this.currentSong.preview_url;
     this.audio.load();
-    this.isPlaying = false;
-  }
-
-  play(): void {
-    if (!this.currentSong?.preview_url) return;
-    this.audio.play();
-    this.isPlaying = true;
-  }
-
-  pause(): void {
-    this.audio.pause();
-    this.isPlaying = false;
+    
+    console.log('Reproduciendo automáticamente...');
+    this.audio.play()
+      .then(() => {
+        this.isPlaying = true;
+        console.log('Reproduciendo:', this.currentSong?.name);
+        this.cdr.detectChanges();
+      })
+      .catch(error => {
+        console.error(' Error al reproducir:', error);
+        this.isPlaying = false;
+        this.cdr.detectChanges();
+      });
   }
 
   togglePlay(): void {
+    console.log('togglePlay - isPlaying:', this.isPlaying);
+    console.log('currentSong:', this.currentSong);
+    console.log('audio.src:', this.audio.src);
+    
+    if (!this.audio.src || this.audio.src === '') {
+      console.warn('No hay audio cargado, cargando canción actual...');
+      if (this.currentSong?.preview_url) {
+        this.loadAndPlay();
+      } else {
+        alert('No hay canción para reproducir');
+      }
+      return;
+    }
+    
     if (this.isPlaying) {
-      this.pause();
+      this.audio.pause();
+      this.isPlaying = false;
+      console.log('⏸️ Pausado');
     } else {
-      this.play();
+      this.audio.play()
+        .then(() => {
+          this.isPlaying = true;
+          console.log('▶️ Reproduciendo');
+          this.cdr.detectChanges();
+        })
+        .catch(error => {
+          console.error('Error al reproducir:', error);
+          this.isPlaying = false;
+        });
     }
   }
 
   playNext(): void {
-    if (!this.currentSong) return;
+    console.log('⏭️ playNext llamado');
+    if (!this.currentSong || this.playlist.length === 0) {
+      console.log('No hay playlist o canción actual');
+      return;
+    }
+    
     const ix = this.playlist.findIndex(t => t.id === this.currentSong!.id);
+    console.log('Índice actual:', ix, 'Total:', this.playlist.length);
+    
     if (ix >= 0 && ix < this.playlist.length - 1) {
-      this.currentSong = this.playlist[ix + 1];
-      if (this.currentSong.preview_url) {
-        this.setCurrentTrack();
-        this.play();
+      const nextSong = this.playlist[ix + 1];
+      console.log('Siguiente canción:', nextSong.name);
+      
+      if (nextSong.preview_url) {
+        this.currentSong = nextSong;
+        this.lastSongId = nextSong.id;
+        this.loadAndPlay();
+      } else {
+        console.warn('La siguiente canción no tiene preview');
+        alert(`"${nextSong.name}" no tiene preview`);
       }
+    } else {
+      console.log('🔚 Fin de la playlist');
     }
   }
 
   playPrevious(): void {
-    if (!this.currentSong) return;
+    console.log('playPrevious llamado');
+    if (!this.currentSong || this.playlist.length === 0) return;
+    
     const ix = this.playlist.findIndex(t => t.id === this.currentSong!.id);
     if (ix > 0) {
-      this.currentSong = this.playlist[ix - 1];
-      if (this.currentSong.preview_url) {
-        this.setCurrentTrack();
-        this.play();
+      const prevSong = this.playlist[ix - 1];
+      console.log('Canción anterior:', prevSong.name);
+      
+      if (prevSong.preview_url) {
+        this.currentSong = prevSong;
+        this.lastSongId = prevSong.id;
+        this.loadAndPlay();
+      } else {
+        console.warn('La canción anterior no tiene preview');
       }
     }
   }

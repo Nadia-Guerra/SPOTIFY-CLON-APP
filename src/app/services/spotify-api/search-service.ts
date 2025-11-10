@@ -4,15 +4,9 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 
 export interface SpotifySearchResponse {
-  tracks: {
-    items: SpotifyTrack[];
-  };
-  albums?: {
-    items: SpotifyAlbum[];
-  };
-  artists?: {
-    items: SpotifyArtist[];
-  };
+  tracks: { items: SpotifyTrack[] };
+  albums?: { items: SpotifyAlbum[] };
+  artists?: { items: SpotifyArtist[] };
 }
 
 export interface SpotifyTrack {
@@ -41,20 +35,17 @@ export interface SpotifyArtist {
   images: Array<{ url: string }>;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class SearchService {
-
   constructor(private http: HttpClient) {}
 
- 
   searchTracks(query: string, limit: number = 20): Observable<SpotifySearchResponse> {
     const params = new HttpParams()
       .set('q', query)
       .set('type', 'track')
-      .set('limit', limit.toString());
-
+      .set('limit', limit.toString())
+      .set('market', 'US');
+    
     return this.http.get<SpotifySearchResponse>(`${environment.API_URL}/search`, { params });
   }
 
@@ -62,33 +53,19 @@ export class SearchService {
     const params = new HttpParams()
       .set('q', query)
       .set('type', 'album')
-      .set('limit', limit.toString());
-
-    return this.http.get<SpotifySearchResponse>(`${environment.API_URL}/search`, { params });
-  }
-
-  searchAll(query: string): Observable<SpotifySearchResponse> {
-    const params = new HttpParams()
-      .set('q', query)
-      .set('type', 'track,album,artist')
-      .set('limit', '10');
-
-    return this.http.get<SpotifySearchResponse>(`${environment.API_URL}/search`, { params });
-  }
-
-  
-  getTrack(trackId: string): Observable<SpotifyTrack> {
-    return this.http.get<SpotifyTrack>(`${environment.API_URL}/tracks/${trackId}`);
-  }
-
-  
-  getRecommendations(seedTracks?: string[], limit: number = 20): Observable<any> {
-    let params = new HttpParams().set('limit', limit.toString());
+      .set('limit', limit.toString())
+      .set('market', 'US');
     
-    if (seedTracks && seedTracks.length > 0) {
-      params = params.set('seed_tracks', seedTracks.join(','));
-    }
+    return this.http.get<SpotifySearchResponse>(`${environment.API_URL}/search`, { params });
+  }
 
-    return this.http.get(`${environment.API_URL}/recommendations`, { params });
+  getAlbumTracks(albumId: string): Observable<{ items: SpotifyTrack[] }> {
+    const params = new HttpParams()
+      .set('market', 'US');
+    
+    return this.http.get<{ items: SpotifyTrack[] }>(
+      `${environment.API_URL}/albums/${albumId}/tracks`,
+      { params }
+    );
   }
 }

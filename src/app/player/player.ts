@@ -20,11 +20,15 @@ export class Player {
     }
   }
 
-   onAlbumTracks(tracks: SpotifyTrack[]) {
+  onAlbumTracks(tracks: SpotifyTrack[]) {
     this.playlist = tracks;
     if (tracks.length > 0) {
       this.song.set(tracks[0]);
     }
+  }
+
+  onSongSelected(track: SpotifyTrack) {
+    this.song.set(track);
   }
 
   showSearchResults() {

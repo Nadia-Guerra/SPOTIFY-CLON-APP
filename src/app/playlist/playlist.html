@@ -1,10 +1,10 @@
-<h1>
-    Queue
-</h1>
-<div class="content">
-    @for(song of playlist; track song.name){
-        <app-song-info [song]="song" displayMode="card"></app-song-info>
-    } @empty {
-        
-    }
+<div class="playlist-container">
+  <h2 class="playlist-title">Queue</h2>
+  <div class="playlist-items">
+    <div *ngFor="let track of playlist" 
+         class="playlist-item"
+         (click)="selectSong(track)">
+      <app-song-info [song]="track" displayMode="card"></app-song-info>
+    </div>
+  </div>
 </div>

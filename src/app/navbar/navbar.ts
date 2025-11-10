@@ -17,7 +17,7 @@ export class Navbar {
   onSearch() {
     const query = this.searchQuery.trim();
     if (query.length === 0) {
-      this.searchResults.emit([]); //si esta vacia se borra
+      this.searchResults.emit([]); //si esta vacia se borra, pero no se pq solo funciona con el click
       return;
     }
     //buscar canciones

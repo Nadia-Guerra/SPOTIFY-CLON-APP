@@ -23,14 +23,14 @@ export const addAuthHeaderInterceptor: HttpInterceptorFn = (req, next): Observab
   
   return next(newReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Si el error es 401 (token expirado), renovar
+      // atraopa errores de token expirado
       if (error.status === 401) {
-        console.warn('⚠️ Token expirado, renovando...');
+        console.warn('Token expirado, renovando...');
         
-        // Convertir la Promise en Observable con from()
+        // se convierte a un observable para los componentes
         return from(authService.refreshToken()).pipe(
           switchMap(() => {
-            // Reintentar la petición con el nuevo token
+            // peticion con nuevo token
             const newToken = cookieService.getCookie('access_token');
             const retryReq = req.clone({
               setHeaders: {

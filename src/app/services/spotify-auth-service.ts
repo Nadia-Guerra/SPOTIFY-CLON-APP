@@ -18,19 +18,19 @@ export class SpotifyAuthService {
     this.initAutoRefresh();
   }
 
-  /*Obtiene el token inicial si no existe*/
+  /*token inicial*/
   async initialize(): Promise<void> {
     if (!this.hasValidToken()) {
       await this.refreshToken();
     }
   }
 
-  /* Verifica si hay un token válido*/
+  /* valida el token*/
   hasValidToken(): boolean {
     return this.cookieService.isCookieValid('access_token');
   }
 
-  /** Refresca el token manualmente*/
+  /*lo refresca*/
   async refreshToken(): Promise<void> {
     if (this.isRefreshing) {
       return;
@@ -44,7 +44,7 @@ export class SpotifyAuthService {
         .pipe(take(1))
         .toPromise();
       
-      console.log('✅ Token refrescado correctamente');
+      console.log('Token refrescado correctamente');
     } catch (error) {
       console.error(' Error al refrescar token:', error);
     } finally {

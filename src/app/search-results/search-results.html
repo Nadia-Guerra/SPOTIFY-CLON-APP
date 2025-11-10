@@ -1,13 +1,10 @@
-<div *ngIf="results.length === 0">
-  <p>No hay resultados.</p>
-</div>
-<div *ngFor="let track of results">
-  <div class="result-item">
-    <img [src]="track.album.images[0]?.url" alt="Portada" width="64" height="64" />
-    <div>
-      <div>{{ track.name }}</div>
-      <div>{{ track.artists[0]?.name }}</div>
-      <audio *ngIf="track.preview_url" [src]="track.preview_url" controls></audio>
+<div class="search-results-container">
+  <h2 class="search-title">Search Results</h2>
+  <div class="search-items">
+    <div *ngFor="let track of results" 
+         class="search-item"
+         (click)="selectSong(track)">
+      <app-song-info [song]="track" displayMode="card"></app-song-info>
     </div>
   </div>
 </div>

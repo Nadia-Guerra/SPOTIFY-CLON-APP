@@ -7,8 +7,31 @@
   padding: 20px 0;
 }
 
-#control-bar {
+.audio-controls {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.audio-meta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.time-current,
+.time-total {
+  font-size: 0.85em;
+  color: #A0AF92;
+  min-width: 45px;
+  text-align: center;
+}
+
+.audio-progress {
+  flex: 1;
   height: 6px;
   -webkit-appearance: none;
   appearance: none;
@@ -18,7 +41,7 @@
   cursor: pointer;
 }
 
-#control-bar::-webkit-slider-thumb {
+.audio-progress::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 16px;
@@ -29,12 +52,12 @@
   transition: all 0.3s ease;
 }
 
-#control-bar::-webkit-slider-thumb:hover {
+.audio-progress::-webkit-slider-thumb:hover {
   background: #ffffff;
   transform: scale(1.2);
 }
 
-#control-bar::-moz-range-thumb {
+.audio-progress::-moz-range-thumb {
   width: 16px;
   height: 16px;
   background: #A0AF92;
@@ -44,12 +67,12 @@
   transition: all 0.3s ease;
 }
 
-#control-bar::-moz-range-thumb:hover {
+.audio-progress::-moz-range-thumb:hover {
   background: #ffffff;
   transform: scale(1.2);
 }
 
-.player-buttons {
+.audio-buttons {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -57,7 +80,7 @@
   gap: 40px;
 }
 
-.player-buttons span {
+.audio-buttons span {
   color: #A0AF92;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -66,17 +89,17 @@
   justify-content: center;
 }
 
-.player-buttons span:hover {
+.audio-buttons span:hover {
   color: #ffffff;
   transform: scale(1.1);
 }
 
-.player-buttons .back i,
-.player-buttons .next i {
-  font-size: 2em;
+.audio-buttons .back i,
+.audio-buttons .next i {
+  font-size: em;
 }
 
-.player-buttons .play {
+.audio-buttons .play-pause {
   width: 60px;
   height: 60px;
   background-color: #A0AF92;
@@ -87,13 +110,12 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.player-buttons .play i {
+.audio-buttons .play-pause i {
   font-size: 1.5em;
   color: #475637;
-  margin-left: 3px;
 }
 
-.player-buttons .play:hover {
+.audio-buttons .play-pause:hover {
   background-color: #ffffff;
   transform: scale(1.15);
 }

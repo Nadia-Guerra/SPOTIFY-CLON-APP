@@ -1,81 +1,4 @@
-* {
-  padding: 0;
-  margin: 0;
-}
-
-:host(.card) {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 8px 10px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  gap: 10px;
-}
-
-:host(.card):hover {
-  background-color: rgba(160, 175, 146, 0.15);
-  transform: translateX(3px);
-}
-
-:host(.card) .card-song-img {
-  width: 45px;
-  height: 45px;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-:host(.card) .card-song-details {
-  flex: 1;
-  overflow: hidden;
-  min-width: 0;
-}
-
-:host(.card) .card-song-details .card-song-title {
-  font-weight: 500;
-  font-size: 0.9em;
-  color: #F3F4F6;
-  margin: 0 0 3px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-:host(.card) .card-song-details .card-song-artist {
-  font-weight: 300;
-  font-size: 0.75em;
-  color: #A0AF92;
-  opacity: 0.8;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-:host(.card) .card-menu-icon {
-  font-size: 1.1em;
-  color: #A0AF92;
-  opacity: 0.6;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-  margin-left: 8px;
-}
-
-:host(.card):hover .card-menu-icon {
-  opacity: 1;
-  color: #F3F4F6;
-}
-
-:host(.card) .main-icons {
-  display: none;
-}
-
-:host(.main) {
+:host {
   width: 100%;
   height: 100%;
   display: flex;
@@ -84,71 +7,67 @@
   justify-content: center;
   text-align: center;
   position: relative;
-  padding: 0 20px;
+  padding: 20px;
 }
 
-:host(.main) .main-icons {
+.main-icons {
   position: absolute;
-  top: 10px;
-  width: 85%;
+  top: 20px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 30px;
-  pointer-events: none;
+  padding: 0 30px;
+  z-index: 10;
 }
 
-:host(.main) .back-icon,
-:host(.main) .favorite-icon {
-  font-size: 1.4em;
+.back-icon,
+.favorite-icon {
+  font-size: 1.5em;
   color: #A0AF92;
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 10px;
-  pointer-events: all;
 }
 
-:host(.main) .back-icon:hover,
-:host(.main) .favorite-icon:hover {
+.back-icon:hover,
+.favorite-icon:hover {
   color: #F3F4F6;
   transform: scale(1.15);
 }
 
-:host(.main) .favorite-icon:hover {
+.favorite-icon:hover {
   color: #ff6b6b;
 }
 
-:host(.main) .card-song-img {
+.card-song-img {
   width: 100%;
-  max-width: 270px;
+  max-width: 300px;
   height: auto;
   aspect-ratio: 1/1;
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   object-fit: cover;
 }
 
-:host(.main) .card-song-details {
+.card-song-details {
   width: 100%;
-  max-width: 260px;
+  max-width: 300px;
 }
 
-:host(.main) .card-song-details .card-song-title {
+.card-song-title {
   font-weight: 600;
   font-size: 1.5em;
   color: #F3F4F6;
-  margin-bottom: 5px;
+  margin: 0 0 8px 0;
   line-height: 1.2;
 }
 
-:host(.main) .card-song-details .card-song-artist {
+.card-song-artist {
   font-weight: 400;
   font-size: 1em;
   color: #A0AF92;
   opacity: 0.9;
-}
-
-:host(.main) .card-menu-icon {
-  display: none;
+  margin: 0;
 }

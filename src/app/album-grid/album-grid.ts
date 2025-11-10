@@ -1,13 +1,26 @@
-import { Component, Input } from '@angular/core';
-import { SpotifyTrack } from '../services/spotify-api/search-service';
+import { Component, OnInit } from '@angular/core';
+import { SearchService, SpotifyAlbum } from '../services/spotify-api/search-service';
 
 @Component({
   selector: 'app-album-grid',
   templateUrl: './album-grid.html',
   styleUrls: ['./album-grid.css'],
   standalone: false
-
 })
-export class AlbumGrid {
-  @Input() albums: SpotifyTrack[] = [];
+export class AlbumGrid implements OnInit {
+  albums: SpotifyAlbum[] = [];
+
+  constructor(private searchService: SearchService) {}
+
+  ngOnInit() {
+    this.searchService.searchAlbums('mitski', 12).subscribe({
+      next: (response) => {
+        this.albums = response.albums?.items || [];
+      },
+      error: (err) => {
+        console.error('Error al cargar álbumes:', err);
+        this.albums = [];
+      }
+    });
+  }
 }

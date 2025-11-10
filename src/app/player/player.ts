@@ -20,6 +20,13 @@ export class Player {
     }
   }
 
+   onAlbumTracks(tracks: SpotifyTrack[]) {
+    this.playlist = tracks;
+    if (tracks.length > 0) {
+      this.song.set(tracks[0]);
+    }
+  }
+
   showSearchResults() {
     return this.searchResults().length > 0;
   }

@@ -1,10 +1,10 @@
 <div class="main-icons">
   <i class="fa-solid fa-arrow-left back-icon"></i>
   <i class="fa-regular fa-heart favorite-icon"></i>
+<div>
+  <img [src]="song.album.images[0]?.url || ''" alt="" class="card-song-img">
+  <div>
+    <h1 class="card-song-title">{{song.name}}</h1>
+    <h3 class="card-song-artist">{{song.artists[0]?.name || ''}}</h3>
+  </div>
 </div>
-<img [src]="song.album?.images?.[0]?.url || ''" alt="" class="card-song-img">
-<div class="card-song-details">
-  <h1 class="card-song-title">{{song.name}}</h1>
-  <h3 class="card-song-artist">{{song.artists?.[0]?.name || ''}}</h3>
-</div>
-<i class="fa-solid fa-bars card-menu-icon"></i>

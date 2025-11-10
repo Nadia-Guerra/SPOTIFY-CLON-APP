@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SpotifyTrack } from '../services/spotify-api/search-service'; // Ajusta la ruta si es necesario
+import { SpotifyTrack } from '../services/spotify-api/search-service'; 
 
 @Component({
   selector: 'app-search-results',

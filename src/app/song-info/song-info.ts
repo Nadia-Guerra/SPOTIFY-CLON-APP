@@ -1,20 +1,12 @@
-import { booleanAttribute, Component, input, OnInit } from '@angular/core';
-import { Song } from '../interfaces/song';
+import { Component, Input } from '@angular/core';
+import { SpotifyTrack } from '../services/spotify-api/search-service';
 
 @Component({
   selector: 'app-song-info',
-  standalone: false,
   templateUrl: './song-info.html',
-  styleUrl: './song-info.css',
-  host:{
-    '[class]': 'displayMode()',
-  }
+  styleUrls: ['./song-info.css'], 
+  standalone: false
 })
-export class SongInfo{
-  display_mode = input.required<string>({ alias: 'displayMode'});
-  song = input.required<Song>();
-
-  displayMode(){
-    return this.display_mode();
-  }
+export class SongInfo {
+  @Input() song!: SpotifyTrack;
 }

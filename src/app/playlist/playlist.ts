@@ -1,14 +1,12 @@
-import { Component, input } from '@angular/core';
-import { Song } from '../interfaces/song';
+import { Component, Input } from '@angular/core';
+import { SpotifyTrack } from '../services/spotify-api/search-service';
 
 @Component({
   selector: 'app-playlist',
-  standalone: false,
   templateUrl: './playlist.html',
-  styleUrl: './playlist.css'
+  styleUrls: ['./playlist.css'],
+  standalone: false
 })
 export class Playlist {
-
-  playlist = input.required<Song[]>();
-
+  @Input() playlist: SpotifyTrack[] = [];
 }

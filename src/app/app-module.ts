@@ -13,6 +13,7 @@ import { authInterceptor } from './interceptors/auth-interceptor';
 import { addAuthHeaderInterceptor } from './interceptors/add-auth-header-interceptor';
 import { Navbar } from './navbar/navbar';
 import { AlbumGrid } from './album-grid/album-grid';
+import { SearchResults } from './search-results/search-results';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AlbumGrid } from './album-grid/album-grid';
     Playlist,
     Player,
     Navbar,
-    AlbumGrid
+    AlbumGrid,
+    SearchResults
   ],
   imports: [
     BrowserModule,

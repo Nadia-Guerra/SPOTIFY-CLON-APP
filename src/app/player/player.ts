@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { SpotifyTrack } from '../services/spotify-api/search-service';
 
 @Component({
@@ -6,24 +6,21 @@ import { SpotifyTrack } from '../services/spotify-api/search-service';
   templateUrl: './player.html',
   styleUrls: ['./player.css'],
   standalone: false
-
 })
 export class Player {
-  searchResults: SpotifyTrack[] = [];
+  searchResults = signal<SpotifyTrack[]>([]);
   playlist: SpotifyTrack[] = [];
-  currentSong: SpotifyTrack | null = null;
-
-  song(): SpotifyTrack | null {
-    return this.currentSong;
-  }
+  song = signal<SpotifyTrack | null>(null);
 
   onSearchResults(results: SpotifyTrack[]) {
-    this.searchResults = results;
+    this.searchResults.set(results);
     this.playlist = results;
-    this.currentSong = results.length ? results[0] : null;
+    if (results.length > 0) {
+      this.song.set(results[0]);
+    }
   }
 
-  showSearchResults(): boolean {
-    return this.searchResults && this.searchResults.length > 0;
+  showSearchResults() {
+    return this.searchResults().length > 0;
   }
 }

@@ -62,7 +62,7 @@ export class SpotifyAuthService {
         switchMap(() => this.loginService.getAccessToken())
       )
       .subscribe({
-        next: () => console.log('🔄 Token renovado automáticamente'),
+        next: () => console.log('Token renovado automáticamente'),
         error: (error) => console.error(' Error en renovación automática:', error)
       });
   }

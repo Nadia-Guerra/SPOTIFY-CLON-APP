@@ -1,10 +1,8 @@
-<div class="playlist-container">
-  <h2 class="playlist-title">Queue</h2>
-  <div class="playlist-items">
-    <div *ngFor="let track of playlist" 
-         class="playlist-item"
-         (click)="selectSong(track)">
-      <app-song-info [song]="track" displayMode="card"></app-song-info>
-    </div>
+<h2 class="playlist-title">Queue</h2>
+<div class="playlist-items">
+  <div *ngFor="let track of playlist" 
+       class="playlist-item"
+       (click)="selectSong(track)">
+    <app-song-info [song]="track" displayMode="card"></app-song-info>
   </div>
 </div>

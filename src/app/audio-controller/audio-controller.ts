@@ -1,4 +1,4 @@
-import { Component, Input, effect, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { SpotifyTrack } from '../services/spotify-api/search-service';
 
 @Component({
@@ -11,46 +11,26 @@ export class AudioController {
   @Input() currentSong!: SpotifyTrack | null;
   @Input() playlist: SpotifyTrack[] = [];
 
-  private audio: HTMLAudioElement = new Audio();
   isPlaying: boolean = false;
   private lastSongId: string | null = null;
+  private simulatedTime: number = 0;
+  private interval: any;
 
-  constructor(private cdr: ChangeDetectorRef) {
-    this.audio.addEventListener('timeupdate', () => {
-      this.cdr.detectChanges();
-    });
-
-    this.audio.addEventListener('ended', () => {
-      this.isPlaying = false;
-      this.playNext();
-    });
-
-    this.audio.addEventListener('canplay', () => {
-      console.log('Audio listo para reproducir');
-    });
-
-    // Si hay error
-    this.audio.addEventListener('error', (e) => {
-      console.error('Error en el audio:', e);
-      this.isPlaying = false;
-    });
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(): void {
-    console.log('ngOnChanges - currentSong:', this.currentSong);
-    
     if (this.currentSong && this.currentSong.id !== this.lastSongId) {
       this.lastSongId = this.currentSong.id;
       console.log('Nueva canción:', this.currentSong.name);
-      console.log('Preview URL:', this.currentSong.preview_url);
+      this.simulatedTime = 0;
       
-      if (this.currentSong.preview_url) {
-        this.loadAndPlay();
-      } else {
-        console.warn('Sin preview:', this.currentSong.name);
-        alert(`"${this.currentSong.name}" no tiene preview disponible`);
-      }
+      // para que se auto reproduzca visualmente
+      this.startSimulation();
     }
+  }
+
+  ngOnDestroy() {
+    this.stopSimulation();
   }
 
   formatTime(ms?: number): string {
@@ -62,128 +42,108 @@ export class AudioController {
   }
 
   currentTime(): number {
-    return (this.audio.currentTime || 0) * 1000;
+    return this.simulatedTime;
   }
 
   progress(): number {
     if (!this.currentSong?.duration_ms) return 0;
-    return ((this.audio.currentTime * 1000) / this.currentSong.duration_ms) * 100;
+    return (this.simulatedTime / this.currentSong.duration_ms) * 100;
   }
 
   seekTo(event: any): void {
     if (!this.currentSong?.duration_ms) return;
     const percent = event.target.value / 100;
-    this.audio.currentTime = percent * (this.currentSong.duration_ms / 1000);
+    this.simulatedTime = percent * this.currentSong.duration_ms;
   }
 
   duration(): number {
     return this.currentSong?.duration_ms || 0;
   }
 
-  loadAndPlay(): void {
-    if (!this.currentSong?.preview_url) {
-      console.warn('No hay preview_url para cargar');
-      return;
-    }
+  startSimulation(): void {
+    this.stopSimulation();
+    this.isPlaying = true;
+    
+    this.interval = setInterval(() => {
+      if (this.currentSong && this.simulatedTime < this.currentSong.duration_ms) {
+        this.simulatedTime += 100;
+        this.cdr.detectChanges();
+      } else {
+        this.playNext();
+      }
+    }, 100);
+  }
 
-    console.log(' Pausando audio anterior');
-    this.audio.pause();
-    this.audio.currentTime = 0;
-    
-    console.log('Cargando URL:', this.currentSong.preview_url);
-    this.audio.src = this.currentSong.preview_url;
-    this.audio.load();
-    
-    console.log('Reproduciendo automáticamente...');
-    this.audio.play()
-      .then(() => {
-        this.isPlaying = true;
-        console.log('Reproduciendo:', this.currentSong?.name);
-        this.cdr.detectChanges();
-      })
-      .catch(error => {
-        console.error(' Error al reproducir:', error);
-        this.isPlaying = false;
-        this.cdr.detectChanges();
-      });
+  stopSimulation(): void {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
+    this.isPlaying = false;
   }
 
   togglePlay(): void {
-    console.log('togglePlay - isPlaying:', this.isPlaying);
-    console.log('currentSong:', this.currentSong);
-    console.log('audio.src:', this.audio.src);
-    
-    if (!this.audio.src || this.audio.src === '') {
-      console.warn('No hay audio cargado, cargando canción actual...');
-      if (this.currentSong?.preview_url) {
-        this.loadAndPlay();
-      } else {
-        alert('No hay canción para reproducir');
-      }
-      return;
-    }
+    console.log('Toggle play/pause');
     
     if (this.isPlaying) {
-      this.audio.pause();
-      this.isPlaying = false;
-      console.log('⏸️ Pausado');
+      this.stopSimulation();
+      console.log('Pausado');
     } else {
-      this.audio.play()
-        .then(() => {
-          this.isPlaying = true;
-          console.log('▶️ Reproduciendo');
-          this.cdr.detectChanges();
-        })
-        .catch(error => {
-          console.error('Error al reproducir:', error);
-          this.isPlaying = false;
-        });
+      this.startSimulation();
+      console.log('Reproduciendo');
     }
   }
 
   playNext(): void {
-    console.log('⏭️ playNext llamado');
+    console.log('⏭️ Siguiente canción');
     if (!this.currentSong || this.playlist.length === 0) {
-      console.log('No hay playlist o canción actual');
+      console.log('⚠️ No hay playlist');
       return;
     }
     
-    const ix = this.playlist.findIndex(t => t.id === this.currentSong!.id);
-    console.log('Índice actual:', ix, 'Total:', this.playlist.length);
+    const currentIndex = this.playlist.findIndex(t => t.id === this.currentSong!.id);
+    console.log('Índice actual:', currentIndex);
     
-    if (ix >= 0 && ix < this.playlist.length - 1) {
-      const nextSong = this.playlist[ix + 1];
-      console.log('Siguiente canción:', nextSong.name);
+    if (currentIndex >= 0 && currentIndex < this.playlist.length - 1) {
+      const nextSong = this.playlist[currentIndex + 1];
+      console.log('➡️ Siguiente:', nextSong.name);
       
-      if (nextSong.preview_url) {
-        this.currentSong = nextSong;
-        this.lastSongId = nextSong.id;
-        this.loadAndPlay();
-      } else {
-        console.warn('La siguiente canción no tiene preview');
-        alert(`"${nextSong.name}" no tiene preview`);
+      this.currentSong = nextSong;
+      this.lastSongId = nextSong.id;
+      this.simulatedTime = 0;
+      
+      this.cdr.detectChanges();
+      
+      if (this.isPlaying) {
+        this.startSimulation();
       }
     } else {
-      console.log('🔚 Fin de la playlist');
+      console.log('Fin de la playlist');
+      this.stopSimulation();
     }
   }
 
   playPrevious(): void {
-    console.log('playPrevious llamado');
+    console.log('Canción anterior');
     if (!this.currentSong || this.playlist.length === 0) return;
     
-    const ix = this.playlist.findIndex(t => t.id === this.currentSong!.id);
-    if (ix > 0) {
-      const prevSong = this.playlist[ix - 1];
-      console.log('Canción anterior:', prevSong.name);
+    const currentIndex = this.playlist.findIndex(t => t.id === this.currentSong!.id);
+    
+    if (currentIndex > 0) {
+      const prevSong = this.playlist[currentIndex - 1];
+      console.log('Anterior:', prevSong.name);
       
-      if (prevSong.preview_url) {
-        this.currentSong = prevSong;
-        this.lastSongId = prevSong.id;
-        this.loadAndPlay();
-      } else {
-        console.warn('La canción anterior no tiene preview');
+      this.currentSong = prevSong;
+      this.lastSongId = prevSong.id;
+      this.simulatedTime = 0;
+      
+      this.cdr.detectChanges();
+      
+      if (this.isPlaying) {
+        this.startSimulation();
       }
+    } else {
+      console.log('Ya estás en la primera canción');
     }
   }
 }

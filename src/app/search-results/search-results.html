@@ -1,10 +1,32 @@
-<div class="search-results-container">
-  <h2 class="search-title">Search Results</h2>
-  <div class="search-items">
-    <div *ngFor="let track of results" 
-         class="search-item"
-         (click)="selectSong(track)">
-      <app-song-info [song]="track" displayMode="card"></app-song-info>
+<app-navbar></app-navbar>
+
+<div id="main-container">
+  <div id="left-section">
+    <div class="search-results-container">
+      <h2 class="search-title">
+        Resultados para: "{{ searchQuery }}"
+      </h2>
+      
+      <div *ngIf="isLoading" class="loading">
+        Cargando resultados...
+      </div>
+
+      <div *ngIf="!isLoading && results.length === 0" class="no-results">
+        No se encontraron resultados
+      </div>
+
+      <div *ngIf="!isLoading && results.length > 0" class="search-items">
+        <div *ngFor="let track of results" 
+             class="search-item"
+             (click)="selectSong(track)">
+          <app-song-info [song]="track" displayMode="card"></app-song-info>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div id="right-section">
+    <app-song-info *ngIf="currentSong" [song]="currentSong" displayMode="main"></app-song-info>
+    <app-audio-controller [currentSong]="currentSong" [playlist]="results"></app-audio-controller>
   </div>
 </div>

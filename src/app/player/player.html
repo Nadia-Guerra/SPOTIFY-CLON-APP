@@ -1,20 +1,14 @@
 <div class="background-blur" 
      [style.background-image]="song() && song()!.album && song()!.album.images[0] ? 'url(' + song()!.album.images[0].url + ')' : ''"></div>
-<app-navbar (searchResults)="onSearchResults($event)"></app-navbar>
+<app-navbar></app-navbar>
 
 <div id="main-container">
   <div id="left-section">
-    <ng-container *ngIf="showSearchResults(); else mainView">
-      <app-search-results 
-        [results]="searchResults()"
-        (songSelected)="onSongSelected($event)"></app-search-results>
-    </ng-container>
-    <ng-template #mainView>
-      <app-album-grid></app-album-grid>
-      <app-playlist 
-        [playlist]="playlist"
-        (songSelected)="onSongSelected($event)"></app-playlist>
-    </ng-template>
+    <app-album-grid></app-album-grid>
+    <app-playlist 
+      [playlist]="playlist"
+      (songSelected)="onSongSelected($event)">
+    </app-playlist>
   </div>
 
   <div id="right-section">

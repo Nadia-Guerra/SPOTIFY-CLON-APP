@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { SearchService } from '../services/spotify-api/search-service';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -8,27 +8,17 @@ import { SearchService } from '../services/spotify-api/search-service';
   styleUrl: './navbar.css'
 })
 export class Navbar {
-  searchQuery: string = '';
+  searchValue = '';
 
-  @Output() searchResults = new EventEmitter<any>(); 
-
-  constructor(private searchService: SearchService) {}
+  constructor(private router: Router) {}
 
   onSearch() {
-    const query = this.searchQuery.trim();
-    if (query.length === 0) {
-      this.searchResults.emit([]); //si esta vacia se borra, pero no se pq solo funciona con el click
-      return;
+    if (this.searchValue.trim()) {
+      this.router.navigate(['/search'], { 
+        queryParams: { q: this.searchValue } 
+      });
+    } else {
+      this.router.navigate(['/']);
     }
-    //buscar canciones
-    this.searchService.searchTracks(query, 12).subscribe({
-      next: (response) => {
-        this.searchResults.emit(response.tracks.items); 
-      },
-      error: (err) => {
-        console.error('Error en búsqueda:', err);
-        this.searchResults.emit([]);
-      }
-    });
   }
 }

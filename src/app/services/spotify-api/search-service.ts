@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 
 export interface SpotifySearchResponse {
@@ -59,13 +59,30 @@ export class SearchService {
     return this.http.get<SpotifySearchResponse>(`${environment.API_URL}/search`, { params });
   }
 
-  getAlbumTracks(albumId: string): Observable<{ items: SpotifyTrack[] }> {
-    const params = new HttpParams()
-      .set('market', 'US');
+  
+  getAlbumTracks(albumId: string): Observable<{ items: SpotifyTrack[]; albumInfo: any }> {
+    const params = new HttpParams().set('market', 'US');
     
-    return this.http.get<{ items: SpotifyTrack[] }>(
-      `${environment.API_URL}/albums/${albumId}/tracks`,
-      { params }
+    return this.http.get<any>(`${environment.API_URL}/albums/${albumId}`, { params }).pipe(
+      map(album => {
+        
+        const tracks = album.tracks.items.map((track: any) => ({
+          ...track,
+          album: {
+            name: album.name,
+            images: album.images
+          }
+        }));
+        
+        return { 
+          items: tracks,
+          albumInfo: {
+            name: album.name,
+            images: album.images,
+            artists: album.artists
+          }
+        };
+      })
     );
   }
 }

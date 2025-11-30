@@ -1,4 +1,5 @@
-:host {
+
+:host(.main) {
   width: 100%;
   height: 100%;
   display: flex;
@@ -10,7 +11,7 @@
   padding: 20px;
 }
 
-.main-icons {
+:host(.main) .main-icons {
   position: absolute;
   top: 20px;
   width: 100%;
@@ -21,8 +22,8 @@
   z-index: 10;
 }
 
-.back-icon,
-.favorite-icon {
+:host(.main) .back-icon,
+:host(.main) .favorite-icon {
   font-size: 1.5em;
   color: #A0AF92;
   cursor: pointer;
@@ -30,17 +31,17 @@
   padding: 10px;
 }
 
-.back-icon:hover,
-.favorite-icon:hover {
+:host(.main) .back-icon:hover,
+:host(.main) .favorite-icon:hover {
   color: #F3F4F6;
   transform: scale(1.15);
 }
 
-.favorite-icon:hover {
+:host(.main) .favorite-icon:hover {
   color: #ff6b6b;
 }
 
-.card-song-img {
+:host(.main) .card-song-img {
   width: 100%;
   max-width: 300px;
   height: auto;
@@ -51,12 +52,12 @@
   object-fit: cover;
 }
 
-.card-song-details {
+:host(.main) .card-song-details {
   width: 100%;
   max-width: 300px;
 }
 
-.card-song-title {
+:host(.main) .card-song-title {
   font-weight: 600;
   font-size: 1.5em;
   color: #F3F4F6;
@@ -64,10 +65,59 @@
   line-height: 1.2;
 }
 
-.card-song-artist {
+:host(.main) .card-song-artist {
   font-weight: 400;
   font-size: 1em;
   color: #A0AF92;
   opacity: 0.9;
   margin: 0;
+}
+:host(.card) {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+  gap: 12px;
+}
+
+:host(.card) .main-icons {
+  display: none;
+}
+
+:host(.card) .card-song-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+:host(.card) .card-song-details {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  min-width: 0;
+}
+
+:host(.card) .card-song-title {
+  font-weight: 500;
+  font-size: 0.95em;
+  color: #F3F4F6;
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host(.card) .card-song-artist {
+  font-weight: 300;
+  font-size: 0.8em;
+  color: #A0AF92;
+  opacity: 0.85;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

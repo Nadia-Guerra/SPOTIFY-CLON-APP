@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { SpotifyTrack } from '../services/spotify-api/search-service';
 
 @Component({
@@ -10,6 +10,7 @@ import { SpotifyTrack } from '../services/spotify-api/search-service';
 export class AudioController {
   @Input() currentSong!: SpotifyTrack | null;
   @Input() playlist: SpotifyTrack[] = [];
+  @Output() songChanged = new EventEmitter<SpotifyTrack>();
 
   isPlaying: boolean = false;
   private lastSongId: string | null = null;
@@ -19,12 +20,13 @@ export class AudioController {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(): void {
+    console.log('ngOnChanges - currentSong:', this.currentSong?.name);
+    console.log('Playlist length:', this.playlist.length);
+    
     if (this.currentSong && this.currentSong.id !== this.lastSongId) {
       this.lastSongId = this.currentSong.id;
-      console.log('Nueva canción:', this.currentSong.name);
+      console.log('Nueva canción detectada:', this.currentSong.name);
       this.simulatedTime = 0;
-      
-      // para que se auto reproduzca visualmente
       this.startSimulation();
     }
   }
@@ -95,55 +97,52 @@ export class AudioController {
   }
 
   playNext(): void {
-    console.log('⏭️ Siguiente canción');
+    console.log('playNext llamado');
+    console.log('Playlist:', this.playlist.length, 'canciones');
+    console.log('Canción actual:', this.currentSong?.name);
+    
     if (!this.currentSong || this.playlist.length === 0) {
-      console.log('⚠️ No hay playlist');
+      console.warn('⚠️ No hay playlist o canción actual');
+      return;
+    }
+    
+    const currentIndex = this.playlist.findIndex(t => t.id === this.currentSong!.id);
+    console.log('📍 Índice actual:', currentIndex, '/', this.playlist.length - 1);
+    
+    if (currentIndex >= 0 && currentIndex < this.playlist.length - 1) {
+      const nextSong = this.playlist[currentIndex + 1];
+      console.log('➡️ Siguiente canción:', nextSong.name);
+      
+      // Notificar al padre
+      this.songChanged.emit(nextSong);
+      this.simulatedTime = 0;
+    } else {
+      console.log('🔚 Fin de la playlist');
+      this.stopSimulation();
+    }
+  }
+
+  playPrevious(): void {
+    console.log('playPrevious llamado');
+    console.log('Playlist:', this.playlist.length, 'canciones');
+    
+    if (!this.currentSong || this.playlist.length === 0) {
+      console.warn('No hay playlist o canción actual');
       return;
     }
     
     const currentIndex = this.playlist.findIndex(t => t.id === this.currentSong!.id);
     console.log('Índice actual:', currentIndex);
     
-    if (currentIndex >= 0 && currentIndex < this.playlist.length - 1) {
-      const nextSong = this.playlist[currentIndex + 1];
-      console.log('➡️ Siguiente:', nextSong.name);
-      
-      this.currentSong = nextSong;
-      this.lastSongId = nextSong.id;
-      this.simulatedTime = 0;
-      
-      this.cdr.detectChanges();
-      
-      if (this.isPlaying) {
-        this.startSimulation();
-      }
-    } else {
-      console.log('Fin de la playlist');
-      this.stopSimulation();
-    }
-  }
-
-  playPrevious(): void {
-    console.log('Canción anterior');
-    if (!this.currentSong || this.playlist.length === 0) return;
-    
-    const currentIndex = this.playlist.findIndex(t => t.id === this.currentSong!.id);
-    
     if (currentIndex > 0) {
       const prevSong = this.playlist[currentIndex - 1];
-      console.log('Anterior:', prevSong.name);
+      console.log('⬅️ Canción anterior:', prevSong.name);
       
-      this.currentSong = prevSong;
-      this.lastSongId = prevSong.id;
+      // Notificar al padre
+      this.songChanged.emit(prevSong);
       this.simulatedTime = 0;
-      
-      this.cdr.detectChanges();
-      
-      if (this.isPlaying) {
-        this.startSimulation();
-      }
     } else {
-      console.log('Ya estás en la primera canción');
+      console.log('⚠️ Ya estás en la primera canción');
     }
   }
 }

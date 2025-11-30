@@ -23,7 +23,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         if(!body || !body.access_token)
           return event;
 
-        const expireTimeMS = 60*60*1000;
+        const expireTimeMS = 60*60*1000; //calcula el tiempo en que expira el token
         const expireDate = new Date(Date.now()+expireTimeMS);
 
         _cookieService.setCookie('access_token', body.access_token, expireDate);

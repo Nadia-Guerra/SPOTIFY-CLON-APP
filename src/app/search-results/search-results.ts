@@ -49,4 +49,8 @@ export class SearchResults implements OnInit {
   selectSong(track: SpotifyTrack) {
     this.currentSong = track;
   }
+
+  onSongChanged(track: SpotifyTrack) {
+    this.currentSong = track;
+  }
 }

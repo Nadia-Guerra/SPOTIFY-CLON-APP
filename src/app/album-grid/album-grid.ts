@@ -13,9 +13,11 @@ export class AlbumGrid implements OnInit {
   constructor(private searchService: SearchService) {}
 
   ngOnInit() {
+    // Mantener búsqueda de álbumes de Mitski
     this.searchService.searchAlbums('mitski', 12).subscribe({
       next: (response) => {
         this.albums = response.albums?.items || [];
+        console.log(' Álbumes de Mitski cargados:', this.albums.length);
       },
       error: (err) => {
         console.error('Error al cargar álbumes:', err);

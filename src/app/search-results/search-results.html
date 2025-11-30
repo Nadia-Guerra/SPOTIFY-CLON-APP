@@ -27,6 +27,9 @@
 
   <div id="right-section">
     <app-song-info *ngIf="currentSong" [song]="currentSong" displayMode="main"></app-song-info>
-    <app-audio-controller [currentSong]="currentSong" [playlist]="results"></app-audio-controller>
+    <app-audio-controller 
+      [currentSong]="currentSong" 
+      [playlist]="results"
+      (songChanged)="onSongChanged($event)"></app-audio-controller>
   </div>
 </div>

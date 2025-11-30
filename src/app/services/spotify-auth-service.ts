@@ -25,7 +25,7 @@ export class SpotifyAuthService {
     }
   }
 
-  /* valida el token*/
+  /* valida el tokenn*/
   hasValidToken(): boolean {
     return this.cookieService.isCookieValid('access_token');
   }

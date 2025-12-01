@@ -43,7 +43,7 @@ export class SearchService {
   searchAll(query: string): Observable<SpotifySearchResponse> {
     const params = new HttpParams()
       .set('q', query)
-      .set('type', 'artist,album,track')
+      .set('type', 'artist,album,track')//antes solo ponia track, por eso no agarraba
       .set('limit', '10')
       .set('market', 'US');
     

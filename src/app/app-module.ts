@@ -14,7 +14,6 @@ import { addAuthHeaderInterceptor } from './interceptors/add-auth-header-interce
 import { Navbar } from './navbar/navbar';
 import { AlbumGrid } from './album-grid/album-grid';
 import { SearchResults } from './search-results/search-results';
-import { AlbumDetail } from './album-detail/album-detail';
 
 @NgModule({
   declarations: [
@@ -26,7 +25,6 @@ import { AlbumDetail } from './album-detail/album-detail';
     Navbar,
     AlbumGrid,
     SearchResults,
-    AlbumDetail
   ],
   imports: [
     BrowserModule,

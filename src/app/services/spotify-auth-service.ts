@@ -52,13 +52,12 @@ export class SpotifyAuthService {
     }
   }
 
-
-
+  //se refresca automaticamente
   private initAutoRefresh(): void {
    
     interval(this.tokenRefreshInterval)
       .pipe(
-        filter(() => !this.isRefreshing),
+        filter(() => !this.isRefreshing), //condicion para ver que no este regiistrado ya
         switchMap(() => this.loginService.getAccessToken())
       )
       .subscribe({

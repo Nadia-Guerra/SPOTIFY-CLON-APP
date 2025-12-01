@@ -4,7 +4,7 @@ import { Observable, map } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 
 export interface SpotifySearchResponse {
-  tracks: { items: SpotifyTrack[] };
+  tracks?: { items: SpotifyTrack[] };
   albums?: { items: SpotifyAlbum[] };
   artists?: { items: SpotifyArtist[] };
 }
@@ -39,6 +39,17 @@ export interface SpotifyArtist {
 export class SearchService {
   constructor(private http: HttpClient) {}
 
+  // Búsqueda combinada de artistas, álbumes y canciones
+  searchAll(query: string): Observable<SpotifySearchResponse> {
+    const params = new HttpParams()
+      .set('q', query)
+      .set('type', 'artist,album,track')
+      .set('limit', '10')
+      .set('market', 'US');
+    
+    return this.http.get<SpotifySearchResponse>(`${environment.API_URL}/search`, { params });
+  }
+
   searchTracks(query: string, limit: number = 20): Observable<SpotifySearchResponse> {
     const params = new HttpParams()
       .set('q', query)
@@ -59,13 +70,11 @@ export class SearchService {
     return this.http.get<SpotifySearchResponse>(`${environment.API_URL}/search`, { params });
   }
 
-  
   getAlbumTracks(albumId: string): Observable<{ items: SpotifyTrack[]; albumInfo: any }> {
     const params = new HttpParams().set('market', 'US');
     
     return this.http.get<any>(`${environment.API_URL}/albums/${albumId}`, { params }).pipe(
       map(album => {
-        
         const tracks = album.tracks.items.map((track: any) => ({
           ...track,
           album: {

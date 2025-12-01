@@ -11,16 +11,63 @@
         Cargando resultados...
       </div>
 
-      <div *ngIf="!isLoading && results.length === 0" class="no-results">
+      <div *ngIf="!isLoading && !hasResults()" class="no-results">
         No se encontraron resultados
       </div>
 
-      <div *ngIf="!isLoading && results.length > 0" class="search-items">
-        <div *ngFor="let track of results" 
-             class="search-item"
-             (click)="selectSong(track)">
-          <app-song-info [song]="track" displayMode="card"></app-song-info>
+      <div *ngIf="!isLoading && hasResults()" class="all-results">
+        
+        <div *ngIf="artists.length > 0" class="result-section">
+          <h3 class="section-title">Artistas</h3>
+          <div class="result-grid">
+            <div *ngFor="let artist of artists" 
+                 class="result-item artist-item"
+                 (click)="selectSong(tracks[0])">
+              <img [src]="artist.images[0]?.url || 'https://via.placeholder.com/150'" 
+                   alt="Artist" 
+                   class="result-img artist-img">
+              <div class="result-details">
+                <p class="result-title">{{ artist.name }}</p>
+                <p class="result-subtitle">Artista</p>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div *ngIf="albums.length > 0" class="result-section">
+          <h3 class="section-title">Álbumes</h3>
+          <div class="result-grid">
+            <div *ngFor="let album of albums" 
+                 class="result-item"
+                 (click)="selectAlbum(album)">
+              <img [src]="album.images[0]?.url || 'https://via.placeholder.com/150'" 
+                   alt="Album" 
+                   class="result-img">
+              <div class="result-details">
+                <p class="result-title">{{ album.name }}</p>
+                <p class="result-subtitle">{{ album.artists[0]?.name }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="tracks.length > 0" class="result-section">
+          <h3 class="section-title">Canciones</h3>
+          <div class="result-grid">
+            <div *ngFor="let track of tracks" 
+                 class="result-item"
+                 (click)="selectSong(track)">
+              <img [src]="track.album.images[0]?.url || 'https://via.placeholder.com/150'" 
+                   alt="Track" 
+                   class="result-img">
+              <div class="result-details">
+                <p class="result-title">{{ track.name }}</p>
+                <p class="result-subtitle">{{ track.artists[0]?.name }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -29,7 +76,8 @@
     <app-song-info *ngIf="currentSong" [song]="currentSong" displayMode="main"></app-song-info>
     <app-audio-controller 
       [currentSong]="currentSong" 
-      [playlist]="results"
-      (songChanged)="onSongChanged($event)"></app-audio-controller>
+      [playlist]="currentPlaylist"
+      (songChanged)="onSongChanged($event)">
+    </app-audio-controller>
   </div>
 </div>

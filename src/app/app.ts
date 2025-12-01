@@ -18,7 +18,7 @@ export class App implements OnInit {
   async ngOnInit() {
     // autentica spotify
     await this.authService.initialize();
-    console.log('🎵 Spotify Auth inicializado');
+    console.log('Spotify Auth inicializado');
   }
 
   doPetition() {

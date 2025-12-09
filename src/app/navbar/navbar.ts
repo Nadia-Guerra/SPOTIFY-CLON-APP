@@ -13,12 +13,17 @@ export class Navbar {
   constructor(private router: Router) {}
 
   onSearch() {
-    if (this.searchValue.trim()) {
-      this.router.navigate(['/search'], { 
-        queryParams: { q: this.searchValue } 
-      });
-    } else {
-      this.router.navigate(['/']);
-    }
+  const value = this.searchValue.trim();
+
+  if (value) {
+    this.router.navigate(['/search'], { 
+      queryParams: { q: value },
+      queryParamsHandling: 'merge'
+    });
+  } else {
+    this.router.navigate(['/']);
   }
+}
+
+
 }

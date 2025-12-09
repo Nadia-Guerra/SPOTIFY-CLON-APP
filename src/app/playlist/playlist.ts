@@ -8,10 +8,10 @@ import { SpotifyTrack } from '../services/spotify-api/search-service';
   standalone: false
 })
 export class Playlist {
-  @Input() playlist: SpotifyTrack[] = [];
-  @Output() songSelected = new EventEmitter<SpotifyTrack>();
+  @Input() playlist: SpotifyTrack[] = []; 
+  @Output() songSelected = new EventEmitter<SpotifyTrack>(); //emite al padre
 
   selectSong(track: SpotifyTrack) {
-    this.songSelected.emit(track);
+    this.songSelected.emit(track); //notifica 
   }
 }

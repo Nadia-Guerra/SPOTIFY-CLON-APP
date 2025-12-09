@@ -70,6 +70,8 @@ export class SearchService {
     return this.http.get<SpotifySearchResponse>(`${environment.API_URL}/search`, { params });
   }
 
+  
+  
   getAlbumTracks(albumId: string): Observable<{ items: SpotifyTrack[]; albumInfo: any }> {
     const params = new HttpParams().set('market', 'US');
     

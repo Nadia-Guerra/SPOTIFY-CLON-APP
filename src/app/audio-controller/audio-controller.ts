@@ -84,6 +84,7 @@ export class AudioController {
     this.isPlaying = false;
   }
 
+  //le da play o pause
   togglePlay(): void {
     console.log('Toggle play/pause');
     
@@ -97,33 +98,30 @@ export class AudioController {
   }
 
   playNext(): void {
-    console.log('playNext llamado');
     console.log('Playlist:', this.playlist.length, 'canciones');
     console.log('Canción actual:', this.currentSong?.name);
     
     if (!this.currentSong || this.playlist.length === 0) {
-      console.warn('⚠️ No hay playlist o canción actual');
+      console.warn('No hay playlist o canción actual');
       return;
     }
     
     const currentIndex = this.playlist.findIndex(t => t.id === this.currentSong!.id);
-    console.log('📍 Índice actual:', currentIndex, '/', this.playlist.length - 1);
+    console.log('Índice actual:', currentIndex, '/', this.playlist.length - 1);
     
-    if (currentIndex >= 0 && currentIndex < this.playlist.length - 1) {
-      const nextSong = this.playlist[currentIndex + 1];
-      console.log('➡️ Siguiente canción:', nextSong.name);
+    if (currentIndex >= 0 && currentIndex < this.playlist.length - 1) {//que no sea la ultima
+      const nextSong = this.playlist[currentIndex + 1]; 
+      console.log('Siguiente canción:', nextSong.name); //o sea q  si no es la ulltima pasa a la siguiente
       
       // Notificar al padre
       this.songChanged.emit(nextSong);
       this.simulatedTime = 0;
     } else {
-      console.log('🔚 Fin de la playlist');
       this.stopSimulation();
     }
   }
 
   playPrevious(): void {
-    console.log('playPrevious llamado');
     console.log('Playlist:', this.playlist.length, 'canciones');
     
     if (!this.currentSong || this.playlist.length === 0) {
@@ -134,15 +132,14 @@ export class AudioController {
     const currentIndex = this.playlist.findIndex(t => t.id === this.currentSong!.id);
     console.log('Índice actual:', currentIndex);
     
-    if (currentIndex > 0) {
+    if (currentIndex > 0) {//que no sea la primera
       const prevSong = this.playlist[currentIndex - 1];
-      console.log('⬅️ Canción anterior:', prevSong.name);
       
       // Notificar al padre
       this.songChanged.emit(prevSong);
       this.simulatedTime = 0;
     } else {
-      console.log('⚠️ Ya estás en la primera canción');
+      console.log('Ya estás en la primera canción');
     }
   }
 }

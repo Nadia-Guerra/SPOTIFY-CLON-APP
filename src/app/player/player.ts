@@ -20,7 +20,7 @@ export class Player implements OnInit {
   }
 
   loadAlbum(albumId: string) {
-    console.log('🎵 Cargando álbum de Laufey...');
+    console.log('Cargando álbum de Laufey...');
     this.searchService.getAlbumTracks(albumId).subscribe({
       next: (response) => {
         this.playlist = response.items;
@@ -54,7 +54,7 @@ export class Player implements OnInit {
   }
 
   onSongSelected(track: SpotifyTrack) {
-    console.log('🎵 Canción seleccionada:', track.name);
+    console.log('Canción seleccionada:', track.name);
     this.song.set(track);
   }
 

@@ -5,7 +5,7 @@ import { SearchResults } from './search-results/search-results';
 
 const routes: Routes = [
   { path: '', component: Player },
-  { path: 'search', component: SearchResults },
+  { path: 'search', component: SearchResults, runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
   { path: '**', redirectTo: '' }
 ];
 

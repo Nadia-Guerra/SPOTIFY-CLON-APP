@@ -11,7 +11,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     tap(
       event => {
-        
+        //validacion de respuesta de api
         if(!req.url.includes('/api/token'))
           return event;
         

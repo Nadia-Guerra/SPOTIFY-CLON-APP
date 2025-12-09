@@ -15,6 +15,7 @@ export const addAuthHeaderInterceptor: HttpInterceptorFn = (req, next): Observab
 
   const token = cookieService.getCookie('access_token');
 
+  //agrega el header a la peticion
   const newReq = req.clone({
     setHeaders: {
       'Authorization': `Bearer ${token}`
